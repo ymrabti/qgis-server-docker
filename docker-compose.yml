@@ -16,7 +16,7 @@ services:
     restart: always
 
   postgis:
-    image: postgis/postgis:latest
+    image: postgis:latest
     container_name: postgis
     restart: always
     environment:
