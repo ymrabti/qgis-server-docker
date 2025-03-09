@@ -1,0 +1,32 @@
+# docker compose -f "docker-compose.yml" up -d --build
+# docker-desktop://dashboard/build/desktop-linux/desktop-linux/t91lkq0fas563p72pouhbrwsq
+# http://localhost:8080/cgi-bin/qgis_mapserv.fcgi?SERVICE=WMS&REQUEST=GetCapabilities
+
+services:
+  qgis-server:
+    image: qgis/qgis:latest
+    container_name: qgis-server
+    ports:
+      - "8084:80"
+    environment:
+      - QGIS_SERVER_LOG_LEVEL=0
+      - QGIS_SERVER_LOG_STDERR=1
+    depends_on:
+      - postgis
+    restart: always
+
+  postgis:
+    image: postgis/postgis:latest
+    container_name: postgis
+    restart: always
+    environment:
+      POSTGRES_DB: gis
+      POSTGRES_USER: qgis
+      POSTGRES_PASSWORD: qgis123
+    ports:
+      - "5445:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+
+volumes:
+  postgis_data:
